@@ -4,16 +4,16 @@
 
 ## Префикс ссылок на GitHub
 
-В markdown-файлах этого репозитория для перекрёстных ссылок на код используется пример организации **`beeplan`**. Если вы публикуете под другим пользователем или org, выполните замену `github.com/beeplan` на свой префикс (или правьте ссылки вручную).
+Перекрёстные ссылки ведут на репозитории пользователя **[4sidora](https://github.com/4sidora)**. Если проект переедет под org или другой аккаунт — выполните замену `github.com/4sidora` в ссылках (или правьте вручную).
 
 ## Связанные репозитории
 
 | Репозиторий | Содержимое |
 |-------------|------------|
-| [beeplan-edge](https://github.com/beeplan/beeplan-edge) | Прошивка улья (ESP32, ESP‑NOW) |
-| [beeplan-gateway](https://github.com/beeplan/beeplan-gateway) | Прошивка концентратора |
-| [beeplan-api](https://github.com/beeplan/beeplan-api) | REST API, OpenAPI, Docker |
-| [beeplan-web](https://github.com/beeplan/beeplan-web) | Веб‑клиент (Vite + React) |
+| [beeplan-edge](https://github.com/4sidora/beeplan-edge) | Прошивка улья (ESP32, ESP‑NOW) |
+| [beeplan-gateway](https://github.com/4sidora/beeplan-gateway) | Прошивка концентратора |
+| [beeplan-api](https://github.com/4sidora/beeplan-api) | REST API, OpenAPI, Docker |
+| [beeplan-web](https://github.com/4sidora/beeplan-web) | Веб‑клиент (Vite + React) |
 
 ## Документы в этом репозитории
 

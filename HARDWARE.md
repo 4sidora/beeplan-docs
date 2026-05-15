@@ -10,8 +10,8 @@
 
 | Прошивка | Репозиторий | Плата по умолчанию (PlatformIO) |
 |----------|-------------|----------------------------------|
-| Конечное устройство (улей) | [beeplan-edge](https://github.com/beeplan/beeplan-edge) | `esp32dev` (ESP32) |
-| Концентратор | [beeplan-gateway](https://github.com/beeplan/beeplan-gateway) | `esp32dev` (ESP32) |
+| Конечное устройство (улей) | [beeplan-edge](https://github.com/4sidora/beeplan-edge) | `esp32dev` (ESP32) |
+| Концентратор | [beeplan-gateway](https://github.com/4sidora/beeplan-gateway) | `esp32dev` (ESP32) |
 
 Можно собирать под другую плату с ESP32 — укажите `board` в `platformio.ini` и сверьте нумерацию GPIO с даташитом **вашей** платы.
 
@@ -42,7 +42,7 @@
    - **`DEVICE_PUBLIC_ID`** — строка, как у записи **EdgeDevice** в BeePlan API (например после `seed_dev`: `dev-edge-1`).
 3. `pio run -t upload` из клонированного репозитория **beeplan-edge**.
 
-Формат радиокадра — в [README beeplan-edge](https://github.com/beeplan/beeplan-edge/blob/main/README.md) (при другом org замените префикс в ссылке).
+Формат радиокадра — в [README beeplan-edge](https://github.com/4sidora/beeplan-edge/blob/main/README.md).
 
 ---
 
@@ -62,7 +62,7 @@
 
 ### Сборка и прошивка
 
-1. В `beeplan-gateway/include/config.h` задайте **`WIFI_SSID`**, **`WIFI_PASSWORD`**, **`API_BASE_URL`**, **`INGEST_TOKEN`** (токен концентратора из API, см. `python -m beeplan.seed_dev` в [README beeplan-api](https://github.com/beeplan/beeplan-api/blob/main/README.md)).
+1. В `beeplan-gateway/include/config.h` задайте **`WIFI_SSID`**, **`WIFI_PASSWORD`**, **`API_BASE_URL`**, **`INGEST_TOKEN`** (токен концентратора из API, см. `python -m beeplan.seed_dev` в [README beeplan-api](https://github.com/4sidora/beeplan-api/blob/main/README.md)).
 2. `pio run -t upload` из репозитория **beeplan-gateway**.
 3. Узнайте **MAC станции** этого ESP32 (лог при старте, веб-интерфейс роутера, `WiFi.macAddress()` в тестовом скетче) и пропишите его в **`GATEWAY_MAC`** на каждом конечном устройстве.
 

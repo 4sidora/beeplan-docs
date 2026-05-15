@@ -1,6 +1,6 @@
 # Создание репозиториев на GitHub
 
-Префикс ниже — пример `beeplan`; замените на **ваш** org или username (`YOUR_ORG`).
+Репозитории уже созданы у **4sidora**. Для другого аккаунта замените `4sidora` / `YOUR_ORG` на свой префикс.
 
 ## Требования
 
@@ -18,17 +18,12 @@
 Из каталога **beeplan-docs** (после `git init` и коммита):
 
 ```bash
-gh repo create beeplan/beeplan-docs --public --source=. --remote=origin --push
+gh repo create 4sidora/beeplan-docs --public --source=. --remote=origin --push
 ```
 
-Повторите для остальных каталогов, меняя имя репозитория:
+Повторите для остальных имён репозитория (`beeplan-api`, `beeplan-web`, `beeplan-edge`, `beeplan-gateway`), меняя вторую часть после `/`.
 
-- `beeplan/beeplan-api`
-- `beeplan/beeplan-web`
-- `beeplan/beeplan-edge`
-- `beeplan/beeplan-gateway`
-
-Если репозиторий создаётся под **личным** аккаунтом, используйте `YOUR_USERNAME/beeplan-docs` и т.д.
+Под **другим** пользователем или org: `YOUR_ORG/beeplan-docs` и т.д.
 
 ## Ручной первый push
 

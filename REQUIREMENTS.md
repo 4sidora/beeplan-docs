@@ -37,4 +37,4 @@
 ## Безопасность
 
 - Секреты концентратора и JWT не коммитить; использовать `.env` и переменные окружения.
-- См. [SECURITY.md](https://github.com/beeplan/beeplan-api/blob/main/SECURITY.md) в репозитории **beeplan-api** (замените префикс `github.com/beeplan`, если ваш org другой).
+- См. [SECURITY.md](https://github.com/4sidora/beeplan-api/blob/main/SECURITY.md) в репозитории **beeplan-api**.
