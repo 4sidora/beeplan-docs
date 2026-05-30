@@ -22,6 +22,7 @@
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Потоки данных и границы компонентов |
 | [REQUIREMENTS.md](REQUIREMENTS.md) | Продуктовые требования (черновик) |
 | [HARDWARE.md](HARDWARE.md) | Сборка плат, пины, связь устройств |
+| [LOCAL_TESTING.md](LOCAL_TESTING.md) | Локальный end-to-end тест: edge, gateway, API, веб |
 | [AGENTS.md](AGENTS.md) | Правила для разработчиков и ИИ‑агентов |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Pull requests и соглашения по коду |
 | [GITHUB.md](GITHUB.md) | Как создать пустые репозитории и первый push |

@@ -15,6 +15,22 @@
 
 Можно собирать под другую плату с ESP32 — укажите `board` в `platformio.ini` и сверьте нумерацию GPIO с даташитом **вашей** платы.
 
+Можно собирать под другую плату с ESP32 — укажите `board` в `platformio.ini` и сверьте нумерацию GPIO с даташитом **вашей** платы.
+
+---
+
+## Прошивка через веб (рекомендуется)
+
+1. В **beeplan-web** создайте пасеку, концентратор и (опционально) семью.
+2. **Прошивка → Концентратор:** укажите Wi‑Fi и URL API (`VITE_DEVICE_API_URL` / LAN-IP сервера).
+3. Дождитесь сборки на **beeplan-builder**, прошейте ESP32 через USB (WebSerial).
+4. После boot gateway отправит `POST /v1/concentrators/heartbeat` — MAC появится в API.
+5. **Прошивка → Улей:** зарегистрируйте edge-устройство, соберите и прошейте второй ESP32.
+
+Конфигурация генерируется из `include/config.h.in` на сервере сборки; секреты Wi‑Fi **не сохраняются** в PostgreSQL.
+
+Сервис сборки: [beeplan-builder](../beeplan-builder/README.md).
+
 ---
 
 ## Конечное устройство (`beeplan-edge`)
@@ -34,13 +50,11 @@
 
 Пока поля **TBD**: пользователь собирает только ESP32 для отладки радиоканала; датчики можно не подключать.
 
-### Сборка и прошивка
+### Сборка и прошивка (ручная)
 
-1. Установите [PlatformIO](https://platformio.org/).
-2. В `beeplan-edge/include/config.h` задайте:
-   - **`GATEWAY_MAC`** — MAC-адрес ESP32 концентратора (режим STA, см. раздел про концентратор).
-   - **`DEVICE_PUBLIC_ID`** — строка, как у записи **EdgeDevice** в BeePlan API (например после `seed_dev`: `dev-edge-1`).
-3. `pio run -t upload` из клонированного репозитория **beeplan-edge**.
+1. Скопируйте `include/config.h.example` → `include/config.h`.
+2. Задайте **`GATEWAY_MAC`** и **`DEVICE_PUBLIC_ID`** (или используйте веб-мастер `/install/edge`).
+3. `pio run -t upload` из репозитория **beeplan-edge**.
 
 Формат радиокадра — в [README beeplan-edge](https://github.com/4sidora/beeplan-edge/blob/main/README.md).
 
@@ -60,11 +74,12 @@
 | Питание | USB 5 V → регулятор на плате | Для поля — свой стабилизированный источник по документации платы |
 | GSM (будущее) | Uplink без Wi‑Fi | В [REQUIREMENTS.md](REQUIREMENTS.md); после включения в сборку — дописать сюда модуль, UART и пины |
 
-### Сборка и прошивка
+### Сборка и прошивка (ручная)
 
-1. В `beeplan-gateway/include/config.h` задайте **`WIFI_SSID`**, **`WIFI_PASSWORD`**, **`API_BASE_URL`**, **`INGEST_TOKEN`** (токен концентратора из API, см. `python -m beeplan.seed_dev` в [README beeplan-api](https://github.com/4sidora/beeplan-api/blob/main/README.md)).
-2. `pio run -t upload` из репозитория **beeplan-gateway**.
-3. Узнайте **MAC станции** этого ESP32 (лог при старте, веб-интерфейс роутера, `WiFi.macAddress()` в тестовом скетче) и пропишите его в **`GATEWAY_MAC`** на каждом конечном устройстве.
+1. Скопируйте `include/config.h.example` → `include/config.h`.
+2. Задайте Wi‑Fi, `API_BASE_URL`, `INGEST_TOKEN` (или веб-мастер `/install/gateway`).
+3. `pio run -t upload` из репозитория **beeplan-gateway**.
+4. MAC регистрируется автоматически через heartbeat; при ручной прошивке MAC виден в Serial и админке роутера.
 
 ---
 
@@ -82,7 +97,7 @@ flowchart LR
 1. **В облаке (API):** у пасеки есть концентратор с секретом `ingest_token`; у концентратора зарегистрированы конечные устройства с полем **`public_id`** (совпадает с `DEVICE_PUBLIC_ID` в прошивке улья).
 2. **По радио:** улей шлёт ESP‑NOW **на MAC концентратора** (пир задаётся в прошивке). Концентратор **не добавляет** ульи в список пиров — он принимает кадры с корректным заголовком протокола.
 3. **Канал Wi‑Fi:** для стабильности ESP‑NOW оба ESP32 должны работать в совместимой конфигурации канала (при появлении сбоев сверьтесь с документацией ESP‑NOW для вашей связки «улей без постоянного Wi‑Fi / концентратор в сети роутера» и при необходимости зафиксируйте здесь рекомендуемую схему).
-4. **В интернет:** только концентратор подключается к Wi‑Fi и вызывает `POST /v1/telemetry/batch` с заголовком `Authorization: Bearer <ingest_token>`.
+4. **В интернет:** концентратор вызывает `POST /v1/telemetry/batch` и `POST /v1/concentrators/heartbeat` с `Authorization: Bearer <ingest_token>`.
 
 Отдельного протокола «сопряжения по кнопке» в текущем MVP нет: связка **MAC концентратора + `public_id` улья + токен в шлюзе** задаётся конфигурацией до выезда на пасеку.
 

@@ -21,7 +21,7 @@
 gh repo create 4sidora/beeplan-docs --public --source=. --remote=origin --push
 ```
 
-Повторите для остальных имён репозитория (`beeplan-api`, `beeplan-web`, `beeplan-edge`, `beeplan-gateway`), меняя вторую часть после `/`.
+Повторите для остальных имён репозитория (`beeplan-api`, `beeplan-web`, `beeplan-edge`, `beeplan-gateway`, `beeplan-builder`), меняя вторую часть после `/`.
 
 Под **другим** пользователем или org: `YOUR_ORG/beeplan-docs` и т.д.
 
@@ -53,6 +53,7 @@ work/
   beeplan-web/
   beeplan-edge/
   beeplan-gateway/
+  beeplan-builder/
 ```
 
 Ссылки между репозиториями в документации ведут на GitHub; локальные пути в README каждого репозитория — только внутри этого репозитория.
