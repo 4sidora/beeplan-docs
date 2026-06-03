@@ -8,14 +8,10 @@
 
 | Уровень | Поведение |
 |---------|-----------|
-| **Веб** (`GatewayInstallPage`, `EdgeInstallPage`) | Опрос `GET /v1/firmware/builds/{id}` каждые ~2.5 с; статусы `queued` / `building` / `ready` / `failed`; спиннер и текст «~2–4 мин». |
-| **API** (`firmware.py`) | Фоновый `_poll_builder` опрашивает builder каждые 2 с (таймаут ~20 мин). |
-| **Builder** (`compile.py`) | `copytree` исходников во **временную** папку → `pio run` с `capture_output=True` → артефакты в `/artifacts/{id}`. |
-| **Статусы builder** | Только 4 значения, без фазы, % и хвоста лога. |
-
-Пока статус `building`, пользователь не видит, идёт компиляция, линковка или загрузка библиотек — отсюда ощущение «зависло».
-
-В **Dockerfile** builder уже выполняется прогрев четырёх `pio run`, но **каждая пользовательская сборка** не переиспользует `.pio/build` из прошлого запуска.
+| **Веб** (`GatewayInstallPage`, `EdgeInstallPage`) | Опрос `GET /v1/firmware/builds/{id}` каждые ~2.5 с; статусы `queued` / `building` / `ready` / `failed`; таймер, `LinearProgress`, фаза и хвост лога (`FirmwareBuildProgress`). |
+| **API** (`firmware.py`) | Фоновый `_poll_builder` опрашивает builder каждые 2 с (таймаут ~20 мин); прогресс проксируется с builder на GET. |
+| **Builder** (`compile.py`) | Постоянный workdir `/workdir/{profile}/{board}` с кэшем `.pio`; `pio run -j N`; stdout в `artifacts/{id}/build.log`; фазы и `log_tail`. |
+| **Статусы builder** | `phase`, `log_tail`, `progress_pct`, `updated_at` в `GET /v1/builds/{id}`. |
 
 ---
 
@@ -23,13 +19,13 @@
 
 ### Быстро (низкая сложность)
 
-- [ ] **`pio run -j N`** — параллельная компиляция (`N` = число ядер хоста).
+- [x] **`pio run -j N`** — параллельная компиляция (`N` = число ядер хоста).
 - [ ] **Не пересоздавать контейнер builder** без нужды; при старом образе — `beeplan-builder/scripts/warmup-toolchain.sh`.
-- [ ] **Очередь сборок** — одна активная `pio` на инстанс builder (сейчас lock только на словарь `_builds`, несколько потоков могут конкурировать за CPU).
+- [x] **Очередь сборок** — одна активная `pio` на инстанс builder (`_compile_lock`).
 
 ### Средний эффект
 
-- [ ] **Постоянный workdir** вместо `copytree` в temp: генерировать только `include/config.h`, сохранять `.pio/build` per `profile` + `board` (с lock).
+- [x] **Постоянный workdir** вместо `copytree` в temp: синхронизация исходников, `.pio/build` per `profile` + `board`.
 - [ ] **ccache / sccache** в PlatformIO (env + Dockerfile).
 
 ### Операционка / dev
@@ -44,16 +40,16 @@
 
 ### Минимум (без стриминга)
 
-- [ ] Таймер «Идёт сборка: M:SS» от `build.created_at` (поле уже в API).
-- [ ] Подсказка по типу: gateway ~1 мин, edge ~1.5 мин (после прогретого toolchain).
-- [ ] Этапы по таймаутам: «Подготовка» → «Компиляция» → «Упаковка».
+- [x] Таймер «Идёт сборка: M:SS» от `build.created_at` (поле уже в API).
+- [x] Подсказка по типу: gateway ~1 мин, edge ~1.5 мин (после прогретого toolchain).
+- [x] Этапы по фазам builder: «Подготовка» → «Компиляция» → «Линковка» → «Упаковка».
 
 ### Рекомендуемый минимум («не зависло»)
 
 **Builder** — при `pio run`:
 
-- писать stdout построчно в `artifacts/{build_id}/build.log`;
-- расширить `GET /v1/builds/{id}`:
+- [x] писать stdout построчно в `artifacts/{build_id}/build.log`;
+- [x] расширить `GET /v1/builds/{id}`:
   - `phase`: `preparing` | `compiling` | `linking` | `packaging`
   - `log_tail`: последние 20–50 строк
   - `updated_at`
@@ -71,8 +67,8 @@
 
 ## 3. Порядок внедрения
 
-1. Скорость: workdir + `.pio` + `-j`; очередь на builder.
-2. UX: таймер + `log_tail` + `phase`.
+1. ~~Скорость: workdir + `.pio` + `-j`; очередь на builder.~~ ✅
+2. ~~UX: таймер + `log_tail` + `phase`.~~ ✅
 3. По необходимости: SSE.
 
 ---

@@ -10,7 +10,7 @@
 
 | Репозиторий | Содержимое |
 |-------------|------------|
-| [beeplan-edge](https://github.com/4sidora/beeplan-edge) | Прошивка улья (ESP32, ESP‑NOW) |
+| [beeplan-edge](https://github.com/4sidora/beeplan-edge) | Прошивка мультидатчика и др. устройств сбора (ESP32, ESP‑NOW) |
 | [beeplan-gateway](https://github.com/4sidora/beeplan-gateway) | Прошивка концентратора |
 | [beeplan-api](https://github.com/4sidora/beeplan-api) | REST API, OpenAPI, Docker |
 | [beeplan-web](https://github.com/4sidora/beeplan-web) | Веб‑клиент (Vite + React) |
@@ -26,5 +26,6 @@
 | [AGENTS.md](AGENTS.md) | Правила для разработчиков и ИИ‑агентов |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Pull requests и соглашения по коду |
 | [GITHUB.md](GITHUB.md) | Как создать пустые репозитории и первый push |
+| [TODO.md](TODO.md) | Отложенные задачи и идеи (прошивка, edge, API) |
 
 Быстрый старт API: README в репозитории **beeplan-api**.
