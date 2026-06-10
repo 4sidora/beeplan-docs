@@ -20,7 +20,7 @@ BLE и LoRa не используются в v2.
 | v2 | `0x00BEEF02` | Агрегированный hourly report |
 | ACK | `0x00BEEFAC` | Downlink gateway → edge |
 
-Общий заголовок: [`beeplan-protocol/envelope_v2.h`](../beeplan-protocol/envelope_v2.h).
+Общий заголовок: [`beeplan-protocol/envelope_v2.h`](beeplan-protocol/envelope_v2.h).
 
 ## ReportFrameV2
 

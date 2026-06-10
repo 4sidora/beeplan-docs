@@ -8,7 +8,7 @@
 
 | Компонент | Статус |
 |-----------|--------|
-| `ReportFrameV2` / `AckFrameV2` | `beeplan-protocol/envelope_v2.h` (workspace root, **не git**), копии в edge/gateway `include/envelope_v2.h` |
+| `ReportFrameV2` / `AckFrameV2` | `beeplan-docs/beeplan-protocol/envelope_v2.h` (канон), копии в edge/gateway `include/envelope_v2.h` |
 | Edge: deep sleep, TDMA, 1 кадр/ч, ACK listen | `beeplan-edge/src/main.cpp` |
 | Gateway: queue 512, v1/v2, LittleFS spool, ACK, heartbeat 15 min | `beeplan-gateway/src/main.cpp` |
 | API: `wifi_channel`, `telemetry_slot_sec`, `telemetry_ingest_log`, dedup `report_id` | миграция `0010`, `radio_plan.py` |
@@ -42,7 +42,7 @@
 1. **Полевой тест v2:** перепрошить gateway → дождаться `wifi_channel` в UI → собрать/прошить edge 0.2.0
 2. **Тесты из плана:** struct size, slot planner (есть `tests/test_radio_plan.py`), E2E hour cycle, load 100 frames/h
 3. **Документация:** обновить ARCHITECTURE, HARDWARE, REQUIREMENTS, LOCAL_TESTING, README edge/gateway (частично не тронуты)
-4. **`beeplan-protocol`:** решить — отдельный repo или перенести заголовок в beeplan-docs / edge+gateway only
+4. **Документация:** обновить ARCHITECTURE, HARDWARE, REQUIREMENTS, LOCAL_TESTING, README edge/gateway (частично не тронуты)
 5. **Emergency / swarm:** только flags в протоколе, детекция не реализована
 6. **Level B (cloud ACK на edge):** out of scope
 
